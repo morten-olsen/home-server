@@ -1,0 +1,5 @@
+cert-manager:
+  installCRDs: true
+email: not-set
+domain: loopback.services
+issuer: letsencrypt-stage

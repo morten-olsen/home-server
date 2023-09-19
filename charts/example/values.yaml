@@ -1,0 +1,2 @@
+hostname: example.example.com
+issuer: letsencrypt-stage
