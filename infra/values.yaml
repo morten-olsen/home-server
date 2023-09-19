@@ -1,5 +1,0 @@
-email: morten@olsen.pro
-repo: https://github.com/morten-olsen/home-server
-revision: HEAD
-issuer: letsencrypt-stage
-domain: loopback.services

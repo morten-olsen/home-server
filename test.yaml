@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-test
+  labels:
+    storage.k8s.io/name: nfs
+    storage.k8s.io/part-of: kubernetes-complete-reference
+    storage.k8s.io/created-by: ssbostan
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 1Gi
+---
+
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nfs-in-a-pod
+spec:
+  containers:
+    - name: app
+      image: alpine
+      volumeMounts:
+        - name: nfs-volume
+          mountPath: /var/nfs/root
+        - mountPath: /var/nfs/persistant
+          name: persistant
+        - mountPath: /var/nfs/shared
+          name: shared
+      command: [ "/bin/sh" ]
+      args: [ "-c", "sleep 500000" ]
+  volumes:
+    - name: nfs-volume
+      nfs:
+        server: 192.168.20.106
+        path: /mnt/HDD/Apps
+    - name: persistant
+      persistentVolumeClaim:
+        claimName: nfs-test
+    - name: shared
+      persistentVolumeClaim:
+        claimName: pvc-demo

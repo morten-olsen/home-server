@@ -1,4 +1,6 @@
-domain: loopback.services
-issuer: letsencrypt-stage
+env: dev
 repo: https://github.com/morten-olsen/home-server
 revision: HEAD
+domain: loopback.services
+issuer: letsencrypt-stage
+email: morten@olsen.pro

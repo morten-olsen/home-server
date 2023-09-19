@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ingress-nginx
+  name: argo-cd
   namespace: default
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -11,8 +11,12 @@ spec:
     namespace: default
   project: default
   source:
-    path: charts/ingress-nginx
+    path: charts/core/argo-cd
     repoURL: "{{ .Values.repo }}"
+    helm:
+      values: |
+        hostname: argocd.{{ .Values.domain }}
+        issuer: {{ .Values.issuer }}
     targetRevision: "{{ .Values.revision }}"
   syncPolicy:
     automated:

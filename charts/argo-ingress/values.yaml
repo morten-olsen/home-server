@@ -1,4 +1,0 @@
-hostname: argocd.example.com
-issuer: letsencrypt-stage
-argo:
-  svc: argo-cd-argocd-server

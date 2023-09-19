@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-cd-ingress
+  name: storage
   namespace: default
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -11,13 +11,14 @@ spec:
     namespace: default
   project: default
   source:
-    path: charts/argo-ingress
-    helm:
-      values: |
-        hostname: argocd.{{ .Values.domain }}
-        issuer: {{ .Values.issuer }}
+    path: charts/core/storage
     repoURL: "{{ .Values.repo }}"
     targetRevision: "{{ .Values.revision }}"
+    helm:
+      values: |
+        nfs-subdir-external-provisioner:
+          nfs:
+            path: "/mnt/HDD/Apps/{{ .Values.env }}"
   syncPolicy:
     automated:
       prune: true

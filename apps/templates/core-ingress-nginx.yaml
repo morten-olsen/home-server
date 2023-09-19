@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-example
+  name: ingress-nginx
   namespace: default
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -11,13 +11,9 @@ spec:
     namespace: default
   project: default
   source:
-    path: charts/example
+    path: charts/core/ingress-nginx
     repoURL: "{{ .Values.repo }}"
     targetRevision: "{{ .Values.revision }}"
-    helm:
-      values: |
-        hostname: example.{{ .Values.domain }}
-        issuer: {{ .Values.issuer }}
   syncPolicy:
     automated:
       prune: true
