@@ -1,2 +1,3 @@
-hostname: example.example.com
+jellyfin:
+  hostname: jellyfin.example.com
 issuer: letsencrypt-stage

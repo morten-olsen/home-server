@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-deployment"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-pod"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-pod"
+    spec:
+      containers:
+        - image: ghcr.io/linuxserver/jellyfin:latest
+          imagePullPolicy: Always
+          name: jellyfin
+          ports:
+            - containerPort: 8096
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Release.Name }}-svc"
+spec:
+  ports:
+    - port: 80
+      targetPort: 8096
+      protocol: TCP
+  selector:
+    app: "{{ .Release.Name }}-pod"
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "{{ .Release.Name }}-ingress"
+  annotations:
+    cert-manager.io/issuer: "{{ .Values.issuer }}"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "{{ .Values.hostname }}"
+      secretName: "{{ .Release.Name }}-tls"
+  rules:
+    - host: "{{ .Values.hostname }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: "{{ .Release.Name }}-svc"
+                port:
+                  number: 80
