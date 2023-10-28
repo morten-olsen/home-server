@@ -3,3 +3,8 @@ nfs-subdir-external-provisioner:
   nfs:
     server: 192.168.20.106
     path: /mnt/HDD/Apps
+  storageClass:
+    reclaimPolicy: Retain
+    accessModes: ReadWriteMany
+    onDelete: retain
+    pathPattern: "${.PVC.namespace}/${.PVC.name}"

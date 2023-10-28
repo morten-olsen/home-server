@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-demo
+  name: pv-movies
   labels:
-    storage: demo
+    storage: movies
 spec:
   storageClassName: nfs
   capacity:
@@ -13,8 +13,10 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   #storageClassName: slow
+  mountOptions:
+    - hard
   nfs:
-    path: /mnt/HDD/Apps/demo
+    path: /mnt/HDD/Movies
     server: "{{ .Values.host }}"
 
 
@@ -24,7 +26,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-demo
+  name: pvc-movies
 spec:
   storageClassName: nfs
   accessModes:
@@ -34,4 +36,4 @@ spec:
       storage: 1Gi
   selector:
     matchLabels:
-      storage: "demo"
+      storage: "movies"

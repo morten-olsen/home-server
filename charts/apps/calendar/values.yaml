@@ -1,0 +1,2 @@
+hostname: calendar.example.com
+issuer: letsencrypt-stage

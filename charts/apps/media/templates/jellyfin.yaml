@@ -1,60 +1,116 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-{{ .Release.Name }}-jellyfin-data
+  labels:
+    storage.k8s.io/name: nfs
+    storage.k8s.io/part-of: kubernetes-complete-reference
+    storage.k8s.io/created-by: ssbostan
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ .Release.Name }}-deployment"
+  name: "{{ .Release.Name }}-jellyfin-deployment"
 spec:
   selector:
     matchLabels:
-      app: "{{ .Release.Name }}-pod"
+      app: "{{ .Release.Name }}-jellyfin-pod"
   replicas: 1
   template:
     metadata:
       labels:
-        app: "{{ .Release.Name }}-pod"
+        app: "{{ .Release.Name }}-jellyfin-pod"
     spec:
       containers:
         - image: ghcr.io/linuxserver/jellyfin:latest
           imagePullPolicy: Always
-          name: jellyfin
+          name: "{{ .Release.Name }}-jellyfin"
+          env:
+            - name: PUID
+              value: '1000'
+            - name: PGID
+              value: '1001'
+            - name: TZ
+              value: Europe/Amsterdam
           ports:
             - containerPort: 8096
+          volumeMounts:
+            - mountPath: /config
+              name: data 
+            - mountPath: /media/movies
+              name: movies 
+              readOnly: true
+            - mountPath: /media/tv-shows
+              name: tvshows 
+              readOnly: true
+            - mountPath: /media/music
+              name: music 
+              readOnly: true
+            - mountPath: /media/books
+              name: books 
+              readOnly: true
+      volumes:
+        - name: data 
+          persistentVolumeClaim:
+            claimName: "pvc-{{ .Release.Name }}-jellyfin-data"
+        - name: movies 
+          persistentVolumeClaim:
+            claimName: pvc-movies
+        - name: tvshows 
+          persistentVolumeClaim:
+            claimName: pvc-tvshows
+        - name: music 
+          persistentVolumeClaim:
+            claimName: pvc-music
+        - name: books 
+          persistentVolumeClaim:
+            claimName: pvc-books
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ .Release.Name }}-svc"
+  name: "{{ .Release.Name }}-jellyfin-svc"
 spec:
   ports:
     - port: 80
       targetPort: 8096
       protocol: TCP
   selector:
-    app: "{{ .Release.Name }}-pod"
+    app: "{{ .Release.Name }}-jellyfin-pod"
 
 ---
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: "{{ .Release.Name }}-ingress"
+  name: "{{ .Release.Name }}-jellyfin-ingress"
   annotations:
     cert-manager.io/issuer: "{{ .Values.issuer }}"
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - "{{ .Values.hostname }}"
-      secretName: "{{ .Release.Name }}-tls"
+        - "{{ .Values.jellyfin.hostname }}"
+      secretName: "{{ .Release.Name }}-jellyfin-tls"
   rules:
-    - host: "{{ .Values.hostname }}"
+    - host: "{{ .Values.jellyfin.hostname }}"
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: "{{ .Release.Name }}-svc"
+                name: "{{ .Release.Name }}-jellyfin-svc"
                 port:
                   number: 80

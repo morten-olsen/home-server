@@ -1,24 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: media 
-  namespace: default
-  # Finalizer that ensures that project is not deleted until it is not referenced by any application
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  sourceRepos:
-  - '*'
-  destinations:
-  - namespace: '*'
-    server: '*'
-
----
-
-apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: media
+  name: "app-media"
   namespace: default
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -26,13 +9,15 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: default
-  project: media 
+  project: default
   source:
     path: charts/apps/media
     repoURL: "{{ .Values.repo }}"
     targetRevision: "{{ .Values.revision }}"
     helm:
       values: |
+        storage:
+          host: {{ .Values.storage.host }}
         jellyfin:
           hostname: jellyfin.{{ .Values.domain }}
         issuer: {{ .Values.issuer }}

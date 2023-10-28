@@ -23,6 +23,7 @@ spec:
   containers:
     - name: app
       image: alpine
+
       volumeMounts:
         - name: nfs-volume
           mountPath: /var/nfs/root
@@ -30,6 +31,7 @@ spec:
           name: persistant
         - mountPath: /var/nfs/shared
           name: shared
+          readOnly: true
       command: [ "/bin/sh" ]
       args: [ "-c", "sleep 500000" ]
   volumes:
@@ -42,4 +44,4 @@ spec:
         claimName: nfs-test
     - name: shared
       persistentVolumeClaim:
-        claimName: pvc-demo
+        claimName: pvc-movies

@@ -1,3 +1,3 @@
 apiVersion: v2
-name: app-example
+name: app-calendar
 version: 1.0.0

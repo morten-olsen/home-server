@@ -16,8 +16,10 @@ spec:
     targetRevision: "{{ .Values.revision }}"
     helm:
       values: |
+        host: {{ .Values.storage.host }}
         nfs-subdir-external-provisioner:
           nfs:
+            server: {{ .Values.storage.host }}
             path: "/mnt/HDD/Apps/{{ .Values.env }}"
   syncPolicy:
     automated:

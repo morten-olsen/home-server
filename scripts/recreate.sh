@@ -10,5 +10,6 @@ helm install \
   --wait argo-cd "$SCRIPT_DIR/../charts/core/argo-cd"
 helm template "$SCRIPT_DIR/../apps" \
   --set env=$ENV \
+  --set issuer=letsencrypt-prod \
   --set domain=loopback.services \
     | kubectl apply -f -
