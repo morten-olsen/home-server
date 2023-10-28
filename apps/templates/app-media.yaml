@@ -18,7 +18,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-example
+  name: media
   namespace: default
   finalizers:
     - resources-finalizer.argocd.argoproj.io
