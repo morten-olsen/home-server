@@ -11,3 +11,10 @@ spec:
   dnsNames:
     - "{{ .Values.domain }}"
     - "*.{{ .Values.domain }}"
+  acme:
+    config:
+      - dns01:
+          provider: cloudflare
+        domains:
+          - example.com
+          - '*.example.com'
