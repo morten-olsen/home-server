@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-{{ .Release.Name }}-freshrss-data
+  labels:
+    storage.k8s.io/name: nfs
+    storage.k8s.io/part-of: kubernetes-complete-reference
+    storage.k8s.io/created-by: ssbostan
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-freshrss-deployment"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-freshrss-pod"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-freshrss-pod"
+    spec:
+      containers:
+        - image: lscr.io/linuxserver/freshrss:latest
+          imagePullPolicy: Always
+          name: "{{ .Release.Name }}-freshrss"
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /config
+              name: data 
+      volumes:
+        - name: data 
+          persistentVolumeClaim:
+            claimName: "pvc-{{ .Release.Name }}-freshrss-data"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Release.Name }}-freshrss-svc"
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: "{{ .Release.Name }}-freshrss-pod"
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "{{ .Release.Name }}-freshrss-ingress"
+  annotations:
+    cert-manager.io/issuer: "{{ .Values.issuer }}"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "*.{{ .Values.domain }}"
+      secretName: "tls-secret"
+  rules:
+    - host: "{{ .Values.subdomain }}.{{ .Values.domain }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: "{{ .Release.Name }}-freshrss-svc"
+                port:
+                  number: 80
