@@ -1,1 +1,5 @@
 issuer: letsencrypt-stage
+portainer:
+  persistence:
+    enabled: true
+    existingClaim: pvc-portainer
