@@ -16,7 +16,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ .Release.name }} 
+                name: {{ .Release.Name }} 
                 port:
                   name: http
       host: {{ .Values.hostname }}
