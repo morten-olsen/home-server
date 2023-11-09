@@ -1,3 +1,4 @@
+domain: example.com
 jellyfin:
   subdomain: jellyfin
 issuer: letsencrypt-stage
