@@ -19,9 +19,9 @@ spec:
                 name: {{ .Values.argo.svc }} 
                 port:
                   name: http
-      host: {{ .Values.hostname }}
+      host: "{{ .Release.Name }}.{{ .Values.domain}}"
   tls:
     - hosts:
-        - {{ .Values.hostname }}
+        - "*.{{ .Values.domain }}"
       secretName: "tls-secret"
 

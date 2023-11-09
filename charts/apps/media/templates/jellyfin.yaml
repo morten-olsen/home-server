@@ -101,10 +101,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - "{{ .Values.jellyfin.hostname }}"
-      secretName: "{{ .Release.Name }}-jellyfin-tls"
+        - "*.{{ .Values.domain }}"
+      secretName: "tls-secret"
   rules:
-    - host: "{{ .Values.jellyfin.hostname }}"
+    - host: "{{ .Values.jellyfin.subdomain}}.{{ .Values.domain }}"
       http:
         paths:
           - path: /

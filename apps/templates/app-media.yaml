@@ -18,8 +18,7 @@ spec:
       values: |
         storage:
           host: {{ .Values.storage.host }}
-        jellyfin:
-          hostname: jellyfin.{{ .Values.domain }}
+        domain: {{ .Values.domain }}
         issuer: {{ .Values.issuer }}
   syncPolicy:
     automated:
