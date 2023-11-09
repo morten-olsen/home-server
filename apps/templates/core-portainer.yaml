@@ -15,7 +15,7 @@ spec:
     repoURL: "{{ .Values.repo }}"
     helm:
       values: |
-        hostname: portainer.{{ .Values.domain }}
+        domain: {{ .Values.domain }}
         issuer: {{ .Values.issuer }}
     targetRevision: "{{ .Values.revision }}"
   syncPolicy:
