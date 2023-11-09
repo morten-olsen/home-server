@@ -1,6 +1,9 @@
 ENV=${1:-dev}
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+helm repo add argo-cd https://argoproj.github.io/argo-helm
+helm dependency build "$SCRIPT_DIR/../charts/core/argo-cd"
+
 kind delete cluster
 kind create cluster --config "$SCRIPT_DIR/../kind-config.yaml"
 "$SCRIPT_DIR/update-secrets.sh"
