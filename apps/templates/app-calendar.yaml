@@ -17,6 +17,7 @@ spec:
     helm:
       values: |
         domain: {{ .Values.domain }}
+        tls: {{ .Values.tls }}
         issuer: {{ .Values.issuer }}
   syncPolicy:
     automated:

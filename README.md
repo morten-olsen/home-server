@@ -17,3 +17,10 @@ nix develop --impure
 ## Update
 
 Make changes and push to git - argo should auto deploy the changes
+
+## Missing
+
+* Netdata
+* Pihole
+* Rr(?)
+* Improved TLS

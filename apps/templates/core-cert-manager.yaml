@@ -18,6 +18,7 @@ spec:
       values: |
         email: {{ .Values.email }}
         domain: {{ .Values.domain }}
+        tls: {{ .Values.tls }}
         issuer: {{ .Values.issuer }}
   syncPolicy:
     automated:

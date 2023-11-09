@@ -4,5 +4,10 @@ revision: HEAD
 domain: loopback.services
 issuer: letsencrypt-stage
 email: morten@olsen.pro
+tls:
+  - hosts:
+      - "*.{{ .Values.domain }}"
+      - "{{ .Values.domain }}"
+    secretName: "tls-secret"
 storage:
   host: 192.168.20.106
