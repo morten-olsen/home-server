@@ -1,3 +1,0 @@
-subdomain: dns
-domain: example.com
-issuer: letsencrypt-stage
