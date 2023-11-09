@@ -70,10 +70,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - "{{ .Values.hostname }}"
-      secretName: "{{ .Release.Name }}-baikal-tls"
+        - "*.{{ .Values.domain }}"
+      secretName: "tls-secret"
   rules:
-    - host: "{{ .Values.hostname }}"
+    - host: "{{ .Values.subdomain }}.{{ .Values.domain }}"
       http:
         paths:
           - path: /

@@ -1,2 +1,3 @@
-hostname: calendar.example.com
+subdomain: calendar
+domain: example.com
 issuer: letsencrypt-stage
