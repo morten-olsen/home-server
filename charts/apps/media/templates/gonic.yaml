@@ -16,6 +16,24 @@ spec:
 
 ---
 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-{{ .Release.Name }}-gonic-playlists
+  labels:
+    storage.k8s.io/name: nfs
+    storage.k8s.io/part-of: kubernetes-complete-reference
+    storage.k8s.io/created-by: ssbostan
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -45,10 +63,15 @@ spec:
             - mountPath: /music
               name: music 
               readOnly: true
+            - mountPath: /playlists
+              name: playlists
       volumes:
         - name: data 
           persistentVolumeClaim:
             claimName: "pvc-{{ .Release.Name }}-gonic-data"
+        - name: playlists
+          persistentVolumeClaim:
+            claimName: "pvc-{{ .Release.Name }}-gonic-playlists"
         - name: music 
           persistentVolumeClaim:
             claimName: pvc-music
