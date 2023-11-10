@@ -1,4 +1,6 @@
 domain: example.com
 jellyfin:
   subdomain: jellyfin
+gonic:
+  subdomain: music
 issuer: letsencrypt-stage

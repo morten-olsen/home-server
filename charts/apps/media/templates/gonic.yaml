@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-{{ .Release.Name }}-gonic-data
+  labels:
+    storage.k8s.io/name: nfs
+    storage.k8s.io/part-of: kubernetes-complete-reference
+    storage.k8s.io/created-by: ssbostan
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-gonic-deployment"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-gonic-pod"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-gonic-pod"
+    spec:
+      containers:
+        - image: ghcr.io/linuxserver/gonic:latest
+          imagePullPolicy: Always
+          name: "{{ .Release.Name }}-gonic"
+          env:
+            - name: TZ
+              value: Europe/Amsterdam
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /data
+              name: data 
+            - mountPath: /music
+              name: music 
+              readOnly: true
+      volumes:
+        - name: data 
+          persistentVolumeClaim:
+            claimName: "pvc-{{ .Release.Name }}-gonic-data"
+        - name: music 
+          persistentVolumeClaim:
+            claimName: pvc-music
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Release.Name }}-gonic-svc"
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: "{{ .Release.Name }}-gonic-pod"
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "{{ .Release.Name }}-gonic-ingress"
+  annotations:
+    cert-manager.io/issuer: "{{ .Values.issuer }}"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "*.{{ .Values.domain }}"
+        - "{{ .Values.domain }}"
+      secretName: "tls-secret"
+  rules:
+    - host: "{{ .Values.gonic.subdomain }}.{{ .Values.domain }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: "{{ .Release.Name }}-gonic-svc"
+                port:
+                  number: 80
