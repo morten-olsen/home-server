@@ -1,5 +1,5 @@
-hostname: argocd.example.com
 issuer: letsencrypt-stage
+subdomain: argocd
 argo:
   svc: argo-cd-argocd-server
 argo-cd:
@@ -13,4 +13,3 @@ argo-cd:
         - type: helm
           name: argo-cd
           url: https://argoproj.github.io/argo-helm
-
