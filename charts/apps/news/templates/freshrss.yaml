@@ -31,13 +31,13 @@ spec:
         app: "{{ .Release.Name }}-freshrss-pod"
     spec:
       containers:
-        - image: lscr.io/linuxserver/freshrss:latest
+        - image: freshrss/freshrss
           imagePullPolicy: Always
           name: "{{ .Release.Name }}-freshrss"
           ports:
             - containerPort: 80
           volumeMounts:
-            - mountPath: /config
+            - mountPath: /var/www/FreshRSS/data
               name: data 
       volumes:
         - name: data 
