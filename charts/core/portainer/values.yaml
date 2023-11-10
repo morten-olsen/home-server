@@ -1,4 +1,5 @@
 issuer: letsencrypt-stage
+domain: example.com
 portainer:
   persistence:
     enabled: true
