@@ -55,6 +55,8 @@ spec:
           env:
             - name: TZ
               value: Europe/Amsterdam
+            - name: SESSION_SECRET
+              value: 'somethingrandom'
           ports:
             - containerPort: 80
           volumeMounts:
