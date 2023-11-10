@@ -68,7 +68,11 @@ metadata:
     cert-manager.io/issuer: "{{ .Values.issuer }}"
 spec:
   ingressClassName: nginx
-  tls: {{ .Values.tls }}
+  tls:
+    - hosts:
+        - "*.{{ .Values.domain }}"
+        - "{{ .Values.domain }}"
+      secretName: "tls-secret"
   rules:
     - host: "{{ .Values.subdomain }}.{{ .Values.domain }}"
       http:

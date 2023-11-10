@@ -19,7 +19,6 @@ spec:
         storage:
           host: {{ .Values.storage.host }}
         domain: {{ .Values.domain }}
-        tls: {{ .Values.tls }}
         issuer: {{ .Values.issuer }}
   syncPolicy:
     automated:

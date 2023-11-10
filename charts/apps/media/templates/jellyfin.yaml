@@ -102,6 +102,7 @@ spec:
   tls:
     - hosts:
         - "*.{{ .Values.domain }}"
+        - "{{ .Values.domain }}"
       secretName: "tls-secret"
   rules:
     - host: "{{ .Values.jellyfin.subdomain}}.{{ .Values.domain }}"

@@ -9,5 +9,5 @@ spec:
     name: "{{ .Values.issuer }}"
   commonName: "*.{{ .Values.domain }}"
   dnsNames:
-    - "{{ .Values.domain }}"
     - "*.{{ .Values.domain }}"
+    - "{{ .Values.domain }}"

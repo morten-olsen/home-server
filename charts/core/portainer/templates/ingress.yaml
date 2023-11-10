@@ -23,5 +23,6 @@ spec:
   tls:
     - hosts:
         - "*.{{ .Values.domain }}"
+        - "{{ .Values.domain }}"
       secretName: "tls-secret"
 
