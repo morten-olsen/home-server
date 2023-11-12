@@ -3,4 +3,6 @@ jellyfin:
   subdomain: jellyfin
 gonic:
   subdomain: music
+calibreweb:
+  subdomain: books
 issuer: letsencrypt-stage

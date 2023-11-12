@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-{{ .Release.Name }}-calibreweb-data
+  labels:
+    storage.k8s.io/name: nfs
+    storage.k8s.io/part-of: kubernetes-complete-reference
+    storage.k8s.io/created-by: ssbostan
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-calibreweb-deployment"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-calibreweb-pod"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-calibreweb-pod"
+    spec:
+      containers:
+        - image: ghcr.io/linuxserver/calibre-web:latest
+          imagePullPolicy: Always
+          name: "{{ .Release.Name }}-calibreweb"
+          env:
+            - name: PUID
+              value: '1000'
+            - name: PGID
+              value: '1001'
+            - name: TZ
+              value: Europe/Amsterdam
+          ports:
+            - containerPort: 8083
+          volumeMounts:
+            - mountPath: /config
+              name: data 
+            - mountPath: /books
+              name: books 
+      volumes:
+        - name: data 
+          persistentVolumeClaim:
+            claimName: "pvc-{{ .Release.Name }}-calibreweb-data"
+        - name: books 
+          persistentVolumeClaim:
+            claimName: pvc-books
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Release.Name }}-calibreweb-svc"
+spec:
+  ports:
+    - port: 80
+      targetPort: 8083
+      protocol: TCP
+  selector:
+    app: "{{ .Release.Name }}-calibreweb-pod"
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "{{ .Release.Name }}-calibreweb-ingress"
+  annotations:
+    cert-manager.io/issuer: "{{ .Values.issuer }}"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "*.{{ .Values.domain }}"
+        - "{{ .Values.domain }}"
+      secretName: "tls-secret"
+  rules:
+    - host: "{{ .Values.calibreweb.subdomain}}.{{ .Values.domain }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: "{{ .Release.Name }}-calibreweb-svc"
+                port:
+                  number: 80
