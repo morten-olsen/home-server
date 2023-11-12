@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-apps
+  labels:
+    storage: apps
+spec:
+  storageClassName: nfs
+  capacity:
+    storage: 50Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  #storageClassName: slow
+  mountOptions:
+    - hard
+  nfs:
+    path: "{{ .Values.nfs-subdir-external-provisioner.nfs.path }}"
+    server: "{{ .Values.host }}"
+
+
+---
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-apps
+spec:
+  storageClassName: nfs
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      storage: "apps"
