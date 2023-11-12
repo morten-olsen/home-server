@@ -49,7 +49,7 @@ spec:
         app: "{{ .Release.Name }}-freshrss-pod"
     spec:
       containers:
-        - image: freshrss/freshrss
+        - image: freshrss/freshrss:alpine
           imagePullPolicy: Always
           name: "{{ .Release.Name }}-freshrss"
           ports:
