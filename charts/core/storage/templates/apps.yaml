@@ -16,7 +16,7 @@ spec:
   mountOptions:
     - hard
   nfs:
-    path: "{{ .Values.nfs-subdir-external-provisioner.nfs.path }}"
+    path: '{{ index .Values "nfs-subdir-external-provisioner" "nfs" "path" }}'
     server: "{{ .Values.host }}"
 
 
