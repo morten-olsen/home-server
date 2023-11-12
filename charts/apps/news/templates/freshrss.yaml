@@ -52,6 +52,13 @@ spec:
         - image: freshrss/freshrss:1.21.0-alpine
           imagePullPolicy: Always
           name: "{{ .Release.Name }}-freshrss"
+          env:
+            - name: ADMIN_EMAIL
+              value: morten@olsen.pro
+            - name: ADMIN_PASSWORD
+              value: test
+            - name: ADMIN_API_PASSWORD
+              value: test
           ports:
             - containerPort: 80
           volumeMounts:
