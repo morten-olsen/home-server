@@ -1,0 +1,3 @@
+subdomain: docs
+domain: example.com
+issuer: letsencrypt-stage
