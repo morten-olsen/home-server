@@ -31,7 +31,7 @@ spec:
         app: "{{ .Release.Name }}-teedy-pod"
     spec:
       containers:
-        - image: sismics/docs:latest
+        - image: sismics/docs:v1.11
           imagePullPolicy: Always
           name: "{{ .Release.Name }}-teedy"
           env:

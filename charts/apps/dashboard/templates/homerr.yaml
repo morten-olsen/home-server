@@ -67,7 +67,7 @@ spec:
         app: "{{ .Release.Name }}-homarr-pod"
     spec:
       containers:
-        - image: ghcr.io/ajnart/homarr:latest
+        - image: ghcr.io/ajnart/homarr:0.14.1
           imagePullPolicy: Always
           name: "{{ .Release.Name }}-homarr"
           ports:
