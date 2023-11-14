@@ -31,7 +31,7 @@ spec:
         app: "{{ .Release.Name }}-jellyfin-pod"
     spec:
       containers:
-        - image: ghcr.io/linuxserver/jellyfin:10.8.12-ls232
+        - image: ghcr.io/linuxserver/jellyfin:10.8.12-1-ls233
           imagePullPolicy: Always
           name: "{{ .Release.Name }}-jellyfin"
           env:
