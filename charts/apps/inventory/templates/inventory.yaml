@@ -34,6 +34,9 @@ spec:
         - image: ghcr.io/hay-kot/homebox:latest
           imagePullPolicy: Always
           name: "{{ .Release.Name }}-homebox"
+          env:
+            - name: HBOX_OPTIONS_ALLOW_REGISTRATION
+              value: false
           ports:
             - containerPort: 7745
           volumeMounts:
