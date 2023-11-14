@@ -48,6 +48,10 @@ spec:
               name: data 
             - mountPath: /data/apps
               name: apps
+              readOnly: true
+            - mountPath: /data/pictures
+              name: pictures
+              readOnly: true
       volumes:
         - name: data 
           persistentVolumeClaim:
@@ -55,6 +59,9 @@ spec:
         - name: apps
           persistentVolumeClaim:
             claimName: pvc-apps
+        - name: pictures
+          persistentVolumeClaim:
+            claimName: pvc-pictures
 
 ---
 
