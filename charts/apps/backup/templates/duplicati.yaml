@@ -31,13 +31,20 @@ spec:
         app: "{{ .Release.Name }}-duplicati-pod"
     spec:
       containers:
-        - image: duplicati/duplicati:latest
+        - image: lscr.io/linuxserver/duplicati:latest
           imagePullPolicy: Always
           name: "{{ .Release.Name }}-duplicati"
+          env:
+            - name: PUID
+              value: '1'
+            - name: PGID
+              value: '1'
+            - name: TZ
+              value: Europe/Amsterdam
           ports:
             - containerPort: 8200
           volumeMounts:
-            - mountPath: /var/www/duplicati/config
+            - mountPath: /configs
               name: data 
             - mountPath: /data/apps
               name: apps
