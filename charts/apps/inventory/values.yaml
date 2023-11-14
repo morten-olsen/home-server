@@ -1,0 +1,3 @@
+subdomain: inventory
+domain: example.com
+issuer: letsencrypt-stage
