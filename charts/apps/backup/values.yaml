@@ -1,0 +1,3 @@
+subdomain: backup
+domain: example.com
+issuer: letsencrypt-stage
