@@ -65,7 +65,7 @@ spec:
       initContainers:
         - command:
             - ntfy
-            - serce 
+            - serve 
           env:
             - name: NTFY_PASSWORD
               value: test
