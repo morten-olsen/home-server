@@ -20,7 +20,7 @@ status:
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ .Release.Name }}-pihole-dns-udp"
+  name: "{{ .Release.Name }}-pihole-dns-tcp"
 spec:
   selector:
     app: pihole
