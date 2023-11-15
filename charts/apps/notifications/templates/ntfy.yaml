@@ -26,7 +26,7 @@ data:
     base-url: https://{{ .Values.subdomain }}.{{ .Values.domain }}
     attachment-cache-dir: "/var/ntfy-data/cache/attachments"
     cache-file: "/var/ntfy-data/cache.db"
-    auth-file: "/var/nfty-data/users.db"
+    auth-file: "/var/lib/ntfy/users.db"
     auth-default-access: deny-all
 
 ---
@@ -57,25 +57,7 @@ spec:
           ports:
             - containerPort: 80
           volumeMounts:
-            - mountPath: /var/ntfy-data/
-              name: data 
-            - name: config
-              mountPath: "/etc/ntfy"
-              readOnly: true
-      initContainers:
-        - command:
-            - ntfy
-            - user
-            - add
-            - --role=admin 
-            - morten
-          env:
-            - name: NTFY_PASSWORD
-              value: test
-          image: binwiederhier/ntfy
-          name: "{{ .Release.Name }}-ntfy-init"
-          volumeMounts:
-            - mountPath: /var/ntfy-data/
+            - mountPath: /var/lib/ntfy/
               name: data 
             - name: config
               mountPath: "/etc/ntfy"
