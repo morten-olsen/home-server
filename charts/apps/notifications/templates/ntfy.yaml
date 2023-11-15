@@ -26,6 +26,8 @@ data:
     base-url: https://{{ .Values.subdomain }}.{{ .Values.domain }}
     attachment-cache-dir: "/var/ntfy-data/cache/attachments"
     cache-file: "/var/ntfy-data/cache.db"
+    auth-file: "/var/nfty-data/users.db"
+    auth-default-access: deny-all
 
 ---
 
