@@ -32,17 +32,17 @@ spec:
             - name: svc-ui
               containerPort: 80
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              port: svc-ui
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          readinessProbe:
-            httpGet:
-              port: svc-ui
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            failureThreshold: 10
+          # livenessProbe:
+          #   httpGet:
+          #     port: svc-ui
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 5
+          # readinessProbe:
+          #   httpGet:
+          #     port: svc-ui
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 10
+          #   failureThreshold: 10
           resources:
             limits:
               memory: "300Mi"
