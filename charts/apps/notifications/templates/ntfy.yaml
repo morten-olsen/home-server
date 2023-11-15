@@ -57,7 +57,7 @@ spec:
           ports:
             - containerPort: 80
           volumeMounts:
-            - mountPath: /var/nftfy-data/
+            - mountPath: /var/ntfy-data/
               name: data 
             - name: config
               mountPath: "/etc/ntfy"
