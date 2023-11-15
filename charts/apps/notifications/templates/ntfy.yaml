@@ -24,10 +24,11 @@ data:
   server.yml: |
     # Template: https://github.com/binwiederhier/ntfy/blob/main/server/server.yml
     base-url: https://{{ .Values.subdomain }}.{{ .Values.domain }}
-    attachment-cache-dir: "/var/ntfy-data/cache/attachments"
-    cache-file: "/var/ntfy-data/cache.db"
+    attachment-cache-dir: "/var/lib/ntfy/attachments"
+    cache-file: "/var/lib/ntfy/cache.db"
     auth-file: "/var/lib/ntfy/users.db"
     auth-default-access: deny-all
+    upstream-base-url: "https://ntfy.sh"
 
 ---
 
@@ -46,7 +47,7 @@ spec:
         app: "{{ .Release.Name }}-notify-pod"
     spec:
       containers:
-        - image: binwiederhier/ntfy
+        - image: binwiederhier/ntfy:v2.7.0
           imagePullPolicy: Always
           name: "{{ .Release.Name }}-notify"
           args: ["serve"]
