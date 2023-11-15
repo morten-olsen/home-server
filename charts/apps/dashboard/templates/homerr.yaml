@@ -75,10 +75,8 @@ spec:
           volumeMounts:
             - mountPath: /app/data/configs
               name: configs 
-          volumeMounts:
             - mountPath: /data
               name: data 
-          volumeMounts:
             - mountPath: /app/public/icons
               name: icons
       volumes:
