@@ -1,4 +1,4 @@
-ENV=${ENV:-dev}
+ENV=${ENV:-prod}
 DOMAIN=${DOMAIN:-olsen.cloud}
 CERT=${CERT:-prod}
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
