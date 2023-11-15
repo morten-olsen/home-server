@@ -62,6 +62,24 @@ spec:
             - name: config
               mountPath: "/etc/ntfy"
               readOnly: true
+      initContainers:
+        - command:
+            - ntfy
+            - user
+            - add
+            - --role=admin 
+            - test
+          env:
+            - name: NTFY_PASSWORD
+              value: test
+          image: binwiederhier/ntfy
+          name: "{{ .Release.Name }}-ntfy-init"
+          volumeMounts:
+            - mountPath: /var/ntfy-data/
+              name: data 
+            - name: config
+              mountPath: "/etc/ntfy"
+              readOnly: true
       volumes:
         - name: data 
           persistentVolumeClaim:
