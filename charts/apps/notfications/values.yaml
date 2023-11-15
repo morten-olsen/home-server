@@ -1,0 +1,3 @@
+subdomain: notify
+domain: example.com
+issuer: letsencrypt-stage
