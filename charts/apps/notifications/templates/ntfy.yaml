@@ -49,16 +49,31 @@ spec:
         - image: binwiederhier/ntfy
           imagePullPolicy: Always
           name: "{{ .Release.Name }}-notify"
-          args: ["user", "--add", "--role=admin", "morten"]
-          env:
-            - name: NTFY_PASSWORD
-              value: foo
+          args: ["serve"]
           resources:
             limits:
               memory: "128Mi"
               cpu: "500m"
           ports:
             - containerPort: 80
+          volumeMounts:
+            - mountPath: /var/ntfy-data/
+              name: data 
+            - name: config
+              mountPath: "/etc/ntfy"
+              readOnly: true
+      initContainers:
+        - command:
+            - ntfy
+            - serce 
+            - add
+            - --role=admin 
+            - morten
+          env:
+            - name: NTFY_PASSWORD
+              value: test
+          image: binwiederhier/ntfy
+          name: "{{ .Release.Name }}-ntfy-init"
           volumeMounts:
             - mountPath: /var/ntfy-data/
               name: data 
