@@ -24,7 +24,7 @@ data:
   server.yml: |
     # Template: https://github.com/binwiederhier/ntfy/blob/main/server/server.yml
     base-url: https://{{ .Values.subdomain }}.{{ .Values.domain }}
-    attachment-cache-dir: "/var/ntfy/cache/attachments"
+    # attachment-cache-dir: "/var/ntfy/cache/attachments"
     cache-file: "/var/ntfy/cache/cache.db"
     auth-file: "/var/nfty/users.db"
     auth-default-access: deny-all
