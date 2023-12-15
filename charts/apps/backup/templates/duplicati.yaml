@@ -36,9 +36,9 @@ spec:
           name: "{{ .Release.Name }}-duplicati"
           env:
             - name: PUID
-              value: '1'
+              value: '0'
             - name: PGID
-              value: '1'
+              value: '0'
             - name: TZ
               value: Europe/Amsterdam
           ports:
