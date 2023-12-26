@@ -3,6 +3,8 @@ kind: Namespace
 metadata:
   name: {{ .Release.Namespace }}
 
+---
+
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
