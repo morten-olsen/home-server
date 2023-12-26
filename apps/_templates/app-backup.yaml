@@ -1,19 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ingress-nginx
-  namespace: default
+  name: "app-backup"
+  namespace: {{ .Values.namespace }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: {{ .Values.namespace }}
   project: default
   source:
-    path: charts/core/ingress-nginx
+    path: charts/apps/backup
     repoURL: "{{ .Values.repo }}"
     targetRevision: "{{ .Values.revision }}"
+    helm:
+      values: |
+        domain: {{ .Values.domain }}
+        issuer: {{ .Values.issuer }}
   syncPolicy:
     automated:
       prune: true

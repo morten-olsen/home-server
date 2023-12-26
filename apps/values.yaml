@@ -4,5 +4,6 @@ revision: HEAD
 domain: loopback.services
 issuer: letsencrypt-stage
 email: morten@olsen.pro
+namespace: prod
 storage:
   host: 192.168.20.106

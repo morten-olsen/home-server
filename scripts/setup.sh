@@ -1,4 +1,4 @@
-ENV=${ENV:-prod}
+ENV=${ENV:-dev}
 DOMAIN=${DOMAIN:-olsen.cloud}
 CERT=${CERT:-prod}
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -11,9 +11,11 @@ helm install \
   --set env=$ENV \
   --set issuer=letsencrypt-$CERT \
   --set domain=$DOMAIN \
+  --namespace system \
+  --create-namespace \
   --wait argo-cd "$SCRIPT_DIR/../charts/core/argo-cd"
-helm template "$SCRIPT_DIR/../apps" \
-  --set env=$ENV \
-  --set issuer=letsencrypt-$CERT \
-  --set domain=$DOMAIN \
-    | kubectl apply -f -
+# helm template "$SCRIPT_DIR/../apps" \
+#   --set env=$ENV \
+#   --set issuer=letsencrypt-$CERT \
+#   --set domain=$DOMAIN \
+#     | kubectl apply -f -

@@ -1,23 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-cd
-  namespace: default
+  name: "app-calendar"
+  namespace: {{ .Values.namespace }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: {{ .Values.namespace }}
   project: default
   source:
-    path: charts/core/argo-cd
+    path: charts/apps/calendar
     repoURL: "{{ .Values.repo }}"
+    targetRevision: "{{ .Values.revision }}"
     helm:
       values: |
         domain: {{ .Values.domain }}
         issuer: {{ .Values.issuer }}
-    targetRevision: "{{ .Values.revision }}"
   syncPolicy:
     automated:
       prune: true
