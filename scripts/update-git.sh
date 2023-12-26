@@ -1,1 +1,1 @@
-git add --all && git commit -m "Update apps" && git push
+git add --all && git commit -m "Update apps" && git push origin HEAD
