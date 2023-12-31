@@ -48,7 +48,7 @@ spec:
         app: "{{ .Release.Name }}-baikal-pod"
     spec:
       containers:
-        - image: ckulka/baikal:0.9.3
+        - image: ckulka/baikal:0.9.4
           imagePullPolicy: Always
           name: "{{ .Release.Name }}-baikal"
           ports:
